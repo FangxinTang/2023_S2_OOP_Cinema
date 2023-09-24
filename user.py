@@ -40,6 +40,13 @@ class User(ABC):
     def password(self, new_password):
         self._password = new_password
 
+    
+    # Methods
+    def full_name(self):
+        full_name = f"{self.fname.capitalize()} {self.lname.capitalize()}"
+        return full_name
+    
+
     # Abstract Method
     @abstractmethod
     def info(self):
