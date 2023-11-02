@@ -49,17 +49,7 @@ class Controller:
     def movies(self):
         return self._movies
     
-    def load_movie_names_from_file(self):
-        try:
-            with open('src/db/movie.txt', mode='r') as file:
-                movie_lines = file.readlines()
-                movie_names=[]
-                # Create a list of movie name list
-                for line in movie_lines:
-                    movie_names.append(line[0])
-            return movie_names
-        except FileNotFoundError:
-            print('Movie File not found')
+
 
     def create_cinema(self, name:str, total_halls:int, total_seats:int, location:str):
         cinema_object = Cinema(name=name, total_halls=total_halls, total_seats=total_seats, location=location)
@@ -69,8 +59,9 @@ class Controller:
         hall_object = CinemaHall(capacity=capacity, seat_data_lines=seat_data_lines)
         return hall_object
     
-    def create_movie(self,title:str, language:str, genre:str, release_date:datetime, screening_date:datetime, start_time:datetime, end_time:datetime):
-        movie_object = Movie(title:str, language:str, genre:str, release_date:datetime)
+    def create_movie(self, title:str, description:str, duration_mins:int, language:str, country:str, genre:str, release_date:datetime):
+        movie_object = Movie(title=title, description=description, duration_mins=duration_mins, language=language, country=country, genre=genre, release_date=release_date)
+        return movie_object
     
     
 

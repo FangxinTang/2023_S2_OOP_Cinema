@@ -222,16 +222,14 @@ class Movie:
 
 
     def __str__(self) -> str:
-        """Get information about the movie."""
-        return f"\
-                Title: {self.title}\n\
+        info = f"Title: {self.title}\n\
                 Description: {self.description}\n\
                 Language: {self.language}\n\
                 Genre: {self.genre}\n\
                 Release Date: {self.release_date}\n\
                 Country: {self.country}\n\
-                Duration: {self.duration_mins}\n\
-                Screenings: {self.screenings_list}\n"
+                Duration: {self.duration_mins}"
+        return info
 
 ############################# 5.Screening #############################
 class Screening:

@@ -6,8 +6,17 @@ from PIL import Image, ImageTk
 from tkinter.messagebox import showinfo,showerror
 from datetime import date, datetime, timedelta
 from a_models import *
+from b_controller import *
+
+############# Create Controller Object #############
+my_controller = Controller()
 
 ############################ Get Data From Files ############################
+def load_movie_info_from_file():
+    with open('src/db/movie.txt', mode='r') as file:
+        movie_lines = file.readlines()
+    return movie_lines if movie_lines else None
+        
 def load_movie_names_from_file():
     movie_names=[]
     with open('src/db/movie.txt', mode='r') as file:
@@ -18,7 +27,7 @@ def load_movie_names_from_file():
     return movie_names
 
 
-############################ Click Btn Functions ############################
+############################ Btn Functions ############################
 def btn_show_movie_list():
     movie_names = load_movie_names_from_file()
     # Clear the previous content in the movie_listbox
@@ -28,9 +37,9 @@ def btn_show_movie_list():
         movie_listbox.insert(tk.END, name)
     print("clicked")
 
+############################ Click Functions ############################
+
 ############################ Test ############################
-
-
 
 ############################ GUI ############################
 # Create a root
@@ -77,12 +86,51 @@ button.grid(row=3,column=0,sticky='nw',pady=5, padx=(30,0))
 
 ###### movie description text_widget #########
 # movie description text_widget:
-## Create a title label
+## Create a title label for description text widget
 description_title_label = ttk.Label(root,text='Description',font=("Helvetica", 16))
 description_title_label.grid(row=1,column=1, sticky='w',pady=5,padx=(50,0))
 
+## create the text widget
 text_widget = scrolledtext.ScrolledText(root, wrap=tk.WORD,width=15, height=20)
 text_widget.grid(row=2, column=1,padx=(25,0),sticky='ew')
+
+## get info to pass to the widget
+selected_movie_index = movie_listbox.curselection()
+print(selected_movie_index)
+print("....")
+if selected_movie_index:
+    movie_lines = load_movie_info_from_file()
+    print(movie_lines)
+    print(".....")
+    selected_movie_info = movie_lines[selected_movie_index]
+    print(selected_movie_info)
+    print("....")
+    format_selected_movie_info = selected_movie_info.strip().split("|")
+    print(format_selected_movie_info)
+    print("....")
+    ## create a movie object.
+    selected_movie = my_controller.create_movie(
+        title=format_selected_movie_info[0],
+        description=format_selected_movie_info[1],
+        duration_mins=int(format_selected_movie_info[2]),
+        language=format_selected_movie_info[3],
+        country=format_selected_movie_info[4],
+        genre=format_selected_movie_info[5],
+        release_date=datetime.strptime(format_selected_movie_info[6], '%Y-%m-%d')
+    )
+    
+    if selected_movie is not None:
+        text_widget.delete('1.0', tk.END) 
+        text_widget.insert(tk.END, selected_movie) 
+    else:
+        text_widget.delete('1.0', tk.END)
+        text_widget.insert(tk.END, "No movie infomation available")
+    
+else:
+    selected_movie_index = None
+
+
+
 # ## Create a listbox for displaying doctors
 # doctor_listbox = tk.Listbox(root, width=30,height=15,exportselection=0,selectmode=tk.SINGLE)
 # doctor_listbox.grid(row=2,column=1, sticky='w',padx=(50, 0)) 
