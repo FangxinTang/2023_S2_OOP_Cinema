@@ -25,26 +25,55 @@
 # Created by Fangxin Tang on 26/09/2023
 
 # Imports
-from models import *
+from a_models import *
+
 
 class Controller:
     """! The Controller class
     Defines all the methods for the controller
     """
     def __init__(self):
-        """! This is the initializer"""
-        ## The list of customers
-        self.__customerList[Customer] = []
-        ## The list of bookings
-        self.__bookingList[Booking] = []
-        ## The list of movies
-        self.__movieList[Movie] = []
-        ## The list of screenings
-        self.__screeningList[Screening] = []
-        ## The list of payments
-        self.__paymentList=[Payment] =[]
+        """! This is the initializer for Controller"""
+        self._users = [] 
+        self._movies = []  
+        self._screenings = []  
+        self._bookings = []  
+        self._notifications = []  
+        self._payments = []
 
+    @property
+    def users(self):
+        return self._users
     
+    @property
+    def movies(self):
+        return self._movies
+    
+    def load_movie_names_from_file(self):
+        try:
+            with open('src/db/movie.txt', mode='r') as file:
+                movie_lines = file.readlines()
+                movie_names=[]
+                # Create a list of movie name list
+                for line in movie_lines:
+                    movie_names.append(line[0])
+            return movie_names
+        except FileNotFoundError:
+            print('Movie File not found')
+
+    def create_cinema(self, name:str, total_halls:int, total_seats:int, location:str):
+        cinema_object = Cinema(name=name, total_halls=total_halls, total_seats=total_seats, location=location)
+        return cinema_object
+    
+    def create_cinema_hall(self, capacity:int,seat_data_lines:str):
+        hall_object = CinemaHall(capacity=capacity, seat_data_lines=seat_data_lines)
+        return hall_object
+    
+    def create_movie(self,title:str, language:str, genre:str, release_date:datetime, screening_date:datetime, start_time:datetime, end_time:datetime):
+        movie_object = Movie(title:str, language:str, genre:str, release_date:datetime)
+    
+    
+
     def login(self,username:str,password:str)->bool:
         """!User login.
         @param username Username
@@ -57,12 +86,21 @@ class Controller:
         """!User logout"""
         pass
 
-
     def check_user_role(self):
         """!Check the role of the currently logged-in user.
         @return User role as 'customer', 'receptionist', or 'admin'"""
 
-    
+    def add_new_movie(self,movie:Movie):
+        """!This method check the user role is admin then add a new move"""
+        pass
+
+    def add_screening(self, screening:Screening):
+        """!Check if the user role is admin then add a screening"""
+        pass
+
+    def cancel_screening(self, screening:Screening):
+        """!Check if the user role is admin then cancel the screening"""
+        pass
     def select_movies_by_multi_criteria(
             self,
             title: Optional[str]=None,
@@ -80,19 +118,6 @@ class Controller:
         """
         pass
 
-
-    def add_new_movie(self,movie:Movie):
-        """!This method check the user role is admin then add a new move"""
-        pass
-
-    def add_screening(self, screening:Screening):
-        """!Check if the user role is admin then add a screening"""
-        pass
-
-    def cancel_screening(self, screening:Screening):
-        """!Check if the user role is admin then cancel the screening"""
-        pass
-
     def make_ticket_booking(self, booking:Booking):
         """!Check if the user role is customer or receptionist then make a ticket booking."""
         pass
@@ -107,7 +132,6 @@ class Controller:
         @return A confirmation message if seats are successfully selected, or an error message if there are issues.
         @rtype: str
         """
-
 
     def createCustomer(self, fname: str, lname: str, username: str, password: str):
         """! Create an instance of Customer
