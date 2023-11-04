@@ -1,3 +1,0 @@
-fangxin|tang|customer1|12345678|customer|0
-daisy|chen|staff1|12345678|staff|0
-ying|chen|admin1|12345678|staff|1

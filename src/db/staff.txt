@@ -1,0 +1,2 @@
+1|ying|chen|admin1|12345678
+0|yiyi|chen|receptionist1|12345678
