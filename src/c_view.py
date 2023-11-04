@@ -218,10 +218,6 @@ def login():
     if request.method == "POST":
         input_username = request.form.get('username')
         input_password = request.form.get('password')
-        print(input_username)
-        print(input_password)
-
-        all_users = my_controller.get_all_usernames()
 
         if my_controller.check_username_pw_match(input_username, input_password):
             session['username'] = input_username
@@ -246,9 +242,43 @@ def login():
                 return redirect("/")
     return render_template("home.html")
 
+@app.route("/register",methods=["GET","POST"])
+def register():
+    if request.method == "POST":
+        fname=request.form.get("fname").capitalize()
+        lname=request.form.get('lname').capitalize()
+        username=request.form.get('username')
+        password=request.form.get('password')
+
+        # Server-side validation
+        if not fname or not lname or not username or not password:
+            flash("Please fill out all required fields.", "warning")
+            return redirect(url_for('register'))  
+
+        # Check if username already exists
+        existing_usernames = my_controller.get_all_usernames()
+        if username in existing_usernames:
+            flash("Username already exists. Please choose another.", "warning")
+            return redirect(url_for('register'))  
+        
+        new_customer = my_controller.create_customer(fname, lname, username, password)
+
+        my_controller.create_customer(fname,lname,username,password)
+    return render_template("/register.html")
+
 @app.route("/customer-dashboard")
 def customer_dashboard():
-    return render_template("customer_dash.html")
+    movie_list = my_controller.movies  # data for display the movie list
+
+    language_list = my_controller.get_all_movie_language_list() # data for search function - drop down menu. return a list of string 
+    genre_list = my_controller.get_all_movie_genre_list() # data for search function
+    date_list = my_controller.get_all_release_date_list() # data for search function
+
+    return render_template("customer_dash.html",
+                           movie_list=movie_list,
+                           language_list=language_list,
+                           genre_list=genre_list,
+                           date_list=date_list)
 
 @app.route("/admin-dashboard")
 def admin_dashboard():
@@ -262,6 +292,20 @@ def receptionist_dashboard():
 def logout():
     session.pop('username', None)
     return redirect('/')
+
+################################### booking ###########################
+@app.route("/booking", methods=["POST","GET"])
+def booking():
+    if "username" not in session:
+        flash("Please log in to book.", "warning")
+        return redirect(url_for('home'))
+    else:
+        role = my_controller.check_user_role(session["username"])
+        if role == 1:
+            flash("You are not authorized to book tickets", "warning")
+            return redirect(url_for('admin_dashboard'))
+        else:
+            return render_template("booking.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

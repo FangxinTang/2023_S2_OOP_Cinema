@@ -2,7 +2,7 @@
 {% block title %}Cinema Home{% endblock %}
 {% block main %}
 
-<!-- {{movie_list[0]}} -->
+
 <div class="row">
     <div class="col-8">
         <div class="search-form">
@@ -58,7 +58,7 @@
                     <button type="submit">Login</button>
                 </div>
 
-                <p class="registration-link">Not registered? <a href="#">Create a new account</a></p>
+                <p class="registration-link">Not registered? <a href="/register">Create a new account</a></p>
             </form>
         </div>
     </div>
@@ -103,7 +103,7 @@
                             Hall {{screening.hall_id}} -
                             {{screening.screening_date}} -
                             {{screening.start_time}} - {{screening.end_time}}
-                            <a href="#"> Book Now</a>
+                            <a href="/booking"> Book Now</a>
                         </p>
                     </div>
                     {%endfor%}
