@@ -34,6 +34,11 @@ body {
     padding: 20px;
 }
 
+.log-out{
+    text-align: right;
+    padding: 20px;
+}
+
 .sub-title {
     text-align: center;
 }

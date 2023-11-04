@@ -222,10 +222,6 @@ def login():
         print(input_password)
 
         all_users = my_controller.get_all_usernames()
-        print(all_users)
-
-        for user in my_controller.users:
-            print(user.username, user.password)
 
         if my_controller.check_username_pw_match(input_username, input_password):
             session['username'] = input_username
@@ -233,13 +229,13 @@ def login():
             role = my_controller.check_user_role(input_username)
             if role == 2:
                 flash("Welcome back, Customer","success")
-                return render_template('/customer_dash.html')
+                return redirect(url_for('customer_dashboard'))
             elif role == 1:
                 flash("Welcome back, Admin","success")
-                return render_template('admin_dash.html')
+                return redirect(url_for('admin_dashboard'))
             else:
                 flash("Welcome back, Receptionist","success")
-                return render_template('receptionist_dash.html')
+                return redirect(url_for('receptionist_dashboard'))
             
         else:
             if not my_controller.input_username_is_exist(input_username):
@@ -248,10 +244,22 @@ def login():
             else:
                 flash("Wrong Password. Please Try again", "warning")
                 return redirect("/")
-    return render_template("/filtered_movies.html")
+    return render_template("home.html")
+
+@app.route("/customer-dashboard")
+def customer_dashboard():
+    return render_template("customer_dash.html")
+
+@app.route("/admin-dashboard")
+def admin_dashboard():
+    return render_template("admin_dash.html")
+
+@app.route("/receptionist-dashboard")
+def receptionist_dashboard():
+    return render_template("receptionist_dash.html")
 
 @app.route("/logout")
-def logout(self):
+def logout():
     session.pop('username', None)
     return redirect('/')
 

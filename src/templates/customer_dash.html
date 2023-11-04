@@ -6,8 +6,63 @@
 <div class="sub-title">
     <div class="row">
         <h3>Customer Dashboard</h3>
-        <p>Hello, customer name here </p>
     </div>
 </div>
+<div class="log-out">
+    <a href="{{ url_for('logout') }}">
+        <button class="btn btn-primary">Logout</button>
+    </a>
+</div>
+
+
+<div class="movie-list-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th style="width: 250px;">Description</th>
+                <th>Language</th>
+                <th>Genre</th>
+                <th>Release Date</th>
+                <th>Country</th>
+                <th>Duration</th>
+                <th>Screenings</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in movie_list%}
+            <tr>
+                <td style="justify-content: center;">
+                    <img src="../static/images/{{movie.title}}.jpg" alt="{{movie.title}} img" style="max-width: 100px;">
+                </td>
+                <td style="text-align: left;">
+                    <strong>{{movie.title}}</strong>
+                    <br>
+                    {{movie.description}}
+                </td>
+                <td>{{movie.language}}</td>
+                <td>{{movie.genre}}</td>
+                <td>{{movie.release_date}}</td>
+                <td>{{movie.country}}</td>
+                <td>{{movie.duration_mins}} Mins</td>
+                <td>
+                    {%for screening in movie.screenings %}
+                    <div class="row">
+                        <p style="font-size:medium;">
+                            Hall {{screening.hall_id}} -
+                            {{screening.screening_date}} -
+                            {{screening.start_time}} - {{screening.end_time}}
+                            <a href="#"> Book Now</a>
+                        </p>
+                    </div>
+                    {%endfor%}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<hr>
 
 {% endblock %}
