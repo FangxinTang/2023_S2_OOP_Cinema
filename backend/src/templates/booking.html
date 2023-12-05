@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Booking{% endblock %}
+{% block main %}
+
+<div class="container">
+    <div class="sub-title">
+        <div class="row">
+            <h3>Book Tickets</h3>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="sub-title">
+        <div class="row">
+            <h4>Screening Infomation</h4>
+        </div>
+    </div>
+
+    <div class="booking-form ">
+        <form action="/booking-details" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Movie Title</th>
+                        <th>Hall</th>
+                        <th>Seat Price</th>
+                        <th>Number of Available Seats</th>
+                        <th>Screening Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{screening.movie_title}}</td>
+                        <td>Hall {{screening.hall_id}}</td>
+                        <td>
+                            {% for key, val in ticket_prices.items() %}
+                            {{key}}-${{val}}<br>
+                            {% endfor%}
+                        </td>
+                        <td>{{num_remaining_seats}}/{{hall.capacity}}</td>
+                        <td>{{screening.screening_date}}</td>
+                        <td>{{screening.start_time}}</td>
+                        <td>{{screening.end_time}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sub-title">
+                <div class="row">
+                    <h4>Tickets</h4>
+                </div>
+            </div>
+
+            <div>
+                <label>VIP Tickets $20</label>
+                <input type="number" name="vip" min="0" max="{{num_vip}}">
+
+                <label>Regular Tickets $10</label>
+                <input type="number" name="regular" min="0" max="{{num_regular}}">
+
+                <label>Accessible Tickets $15</label>
+                <input type="number" name="accessible" min="0" max="{{num_accessible}}">
+            </div>
+
+            <div class="hidden-info">
+                <input type="hidden" name="movie_title" value="{{screening.movie_title}}">
+                <input type="hidden" name="hall_id" value="{{screening.hall_id}}">
+                <input type="hidden" name="screening_date" value="{{screening.screening_date}}">
+                <input type="hidden" name="start_time" value="{{screening.start_time}}">
+                <input type="hidden" name="end_time" value="{{screening.end_time}}">
+
+                <input type="hidden" name="user_id" value="{{user_id}}">
+                <input type="hidden" name="screening_id" value="{{screening_id}}">
+                <input type="hidden" name="booking_datetime" value="{{booking_datetime}}">
+            </div>
+
+            <button type="submit">Book</button>
+        </form>
+
+    </div>
+</div>
+
+{%endblock%}

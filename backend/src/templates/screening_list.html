@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Screenings{% endblock %}
+{% block main %}
+<hr>
+<div class="container">
+    <div class="sub-title">
+        <div class="row">
+            <h3>Receptionist Dashboard</h3>
+            <p>Hello, Receptionist name here </p>
+        </div>
+    </div>
+    <div class="log-out">
+        <a href="{{ url_for('logout') }}">
+            <button class="btn btn-primary">Logout</button>
+        </a>
+    </div>
+
+    <div class="screening-list">
+        
+        <ul>
+            {%for screening in screenings%}
+            <li>
+                {{screening.screening_id}} - {{screening.movie_title}} - {{screening.screening_date}} - {{screening.start_time}} - {{screening.end_time}} - 
+                <a href="/handle-front-book/{{screening.screening_id}}">Book</a>
+            </li>
+            {%endfor%}
+        </ul>
+        
+    </div>
+
+
+</div>
+<hr>
+
+
+{% endblock %}
