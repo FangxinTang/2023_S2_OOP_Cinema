@@ -1,17 +1,15 @@
 """Database ORM models"""
-
-import uuid
-from typing import Optional
-
-import sqlalchemy as sa
 from sqlalchemy import orm
-
 from .. import models as global_models ##### import error
+
+
 
 required_field = orm.mapped_column(nullable=False, unique=True)
 
+
 class Person(global_models.Base):
-    __tablename__ = "Person"
+    """Abstract class Person"""
+    __tablename__ = "person"
 
     name: orm.Mapped[str] = orm.mapped_column(nullable=False)
     address: orm.Mapped[str] = orm.mapped_column(nullable=True)
