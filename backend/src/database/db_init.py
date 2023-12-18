@@ -3,7 +3,7 @@ import uuid
 import datetime as dt
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base 
 from sqlalchemy import sql as sa_sql
 
 

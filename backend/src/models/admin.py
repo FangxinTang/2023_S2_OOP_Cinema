@@ -1,10 +1,6 @@
-"""Database ORM models"""
-from sqlalchemy.orm import relationship
+"""Create Admin model"""
 from .user import User
 
 
 class Admin(User):
     __tablename__ = "admin"
-
-
-

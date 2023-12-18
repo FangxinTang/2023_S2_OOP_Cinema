@@ -2,7 +2,7 @@
 from typing_extensions import Annotated
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
-from database.db_init import BaseModel
+from database.db_init import BaseModel # import from an external package
 
 
 required_unique_string = Annotated[str, mapped_column(String(128), nullable=False, unique=True)]
