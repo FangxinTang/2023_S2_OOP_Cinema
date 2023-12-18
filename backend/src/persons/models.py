@@ -1,35 +1,35 @@
 """Database ORM models"""
+from typing_extensions import Annotated
 from sqlalchemy import orm
-from .. import models as global_models ##### import error
+from ..db_init import Base
 
 
 
-required_field = orm.mapped_column(nullable=False, unique=True)
+required_field = Annotated[str, orm.mapped_column(nullable=False, unique=True)]
 
-
-class Person(global_models.Base):
+class Person(Base):
     """Abstract class Person"""
-    __tablename__ = "person"
+    __abstract__ = True
 
     name: orm.Mapped[str] = orm.mapped_column(nullable=False)
     address: orm.Mapped[str] = orm.mapped_column(nullable=True)
-    email: orm.Mapped[str] = required_field
-    phone: orm.Mapped[str] = required_field
+    email: orm.Mapped[required_field]
+    phone: orm.Mapped[required_field]
 
 
 # ==== DUMMY DATA ==== #
 
-DUMMY_DATA = [
-    (
-        Person,
-        {
-            "name": "Sam Wang",
-            "address": "1000 Alison Street, Mangere, Auckland",
-            "email": "sam@example.com",
-            "phone": "12345678",
-        },
-    )
-]
+# DUMMY_DATA = [
+#     (
+#         Person,
+#         {
+#             "name": "Sam Wang",
+#             "address": "1000 Alison Street, Mangere, Auckland",
+#             "email": "sam@example.com",
+#             "phone": "12345678",
+#         },
+#     )
+# ]
 
 
 # ==== REGISTER ==== #
