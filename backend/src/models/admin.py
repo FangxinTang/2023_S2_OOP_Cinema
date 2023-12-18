@@ -1,9 +1,8 @@
 """Database ORM models"""
-from sqlalchemy import orm
-from ..users import models as user_models
+from ..users.models import User
 
 
-class Admin(user_models):
+class Admin(User):
     """class Admin"""
     __tablename__ = "admin"
 
@@ -24,4 +23,4 @@ class Admin(user_models):
 
 # ==== REGISTER ==== #
 
-MODELS_REGISTER = [Admin]
+# MODELS_REGISTER = [Admin]

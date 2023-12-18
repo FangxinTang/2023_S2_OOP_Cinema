@@ -1,9 +1,8 @@
 """Database ORM models"""
-from sqlalchemy import orm
-from ..users import models as user_models
+from ..users.models import User
 
 
-class FrontStaff(user_models.User):
+class FrontStaff(User):
     """class FrontStaff"""
     __tablename__ = "frontstaff"
 

@@ -1,12 +1,10 @@
 """Initialize the database"""
 
+import uuid
+import datetime as dt
 from sqlalchemy import create_engine
 from sqlalchemy import orm
 from sqlalchemy import sql as sa_sql
-
-import uuid
-import datetime as dt
-
 
 engine = create_engine('postgresql://postgres:postgres@localhost/cinema', echo=True)
 
@@ -58,18 +56,7 @@ class Base(orm.declarative_base):
 
     def __iter__(self):
         return iter(self.keys())
-    
-
-
-### 字典式访问方法：
-
-# __getitem__ 和 __setitem__ 方法允许你像操作字典那样通过键值来获取和设置属性。
-# __contains__ 方法用来检查一个键是否存在于模型属性中。
-# keys 方法返回模型所有属性的键。
-# get 方法获取指定键的值，如果键不存在则返回默认值。
-# items 方法返回键值对的列表。
-# values 方法返回所有属性值的列表。
-# __iter__ 方法使得模型实例可迭代，迭代的是属性键。
 
 Base.metadata.create_all(engine)
+
 Session = orm.sessionmaker(bind=engine)
