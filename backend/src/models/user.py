@@ -1,33 +1,15 @@
-"""Database ORM models"""
+"""User(Abstract) model"""
 from typing_extensions import Annotated
-# import sys
-# import pathlib as pl
-# sys.path.insert(0, str(pl.Path(__file__).resolve().parent.parent))
-from ..models import Person
-from sqlalchemy import orm
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
+from .person import Person
 
-required_field = Annotated[str, orm.mapped_column(nullable=False, unique=True)]
+
+required_unique_string = Annotated[str, mapped_column(String(128), nullable=False, unique=True)]
 
 class User(Person):
-    __tablename__ = "users"
+    __abstract__ = True
 
-    username: orm.Mapped[required_field] 
-    password: orm.Mapped[required_field]
+    username: Mapped[required_unique_string] 
+    password: Mapped[required_unique_string]
 
-
-# # ==== DUMMY DATA ==== #
-
-# DUMMY_DATA = [
-#     (
-#         User,
-#         {
-#             "username": "sam_wang",
-#             "password": "secretpass"
-#         },
-#     )
-# ]
-
-
-# # ==== REGISTER ==== #
-
-# MODELS_REGISTER = [User]
