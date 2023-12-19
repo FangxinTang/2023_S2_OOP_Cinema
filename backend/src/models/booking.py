@@ -1,4 +1,4 @@
-"""Create ShowTime model"""
+"""Create Booking model"""
 from sqlalchemy.orm import Mapped, mapped_column
 from database.db_init import BaseModel
 
