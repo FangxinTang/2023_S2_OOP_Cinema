@@ -1,7 +1,7 @@
 """Create Movie model"""
 from datetime import datetime as dt
-from sqlalchemy import String, CheckConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String, CheckConstraint, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db_init import BaseModel
 
 class Movie(BaseModel):
@@ -50,3 +50,5 @@ class Movie(BaseModel):
         ),
     )
 
+    admin_id = mapped_column(ForeignKey('admin.id'))
+    admin = relationship('Admin', back_populates='movies')
