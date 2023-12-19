@@ -29,7 +29,7 @@ class Movie(BaseModel):
         default="English"
     )
 
-    releaseDate: Mapped[dt] = mapped_column(
+    release_date: Mapped[dt] = mapped_column(
         nullable=True
     )
 
