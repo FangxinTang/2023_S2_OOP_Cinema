@@ -10,6 +10,9 @@ from database.db_init import engine, Base
 from models.person import Person
 from models.user import User
 from models.admin import Admin
+from models.staff import Staff
+from models.customer import Customer
+from models.movies import Movie
 
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
