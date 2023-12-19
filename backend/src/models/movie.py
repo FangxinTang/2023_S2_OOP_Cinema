@@ -52,3 +52,7 @@ class Movie(BaseModel):
 
     admin_id = mapped_column(ForeignKey('admin.id'))
     admin = relationship('Admin', back_populates='movies')
+
+    showtimes = relationship('ShowTime', back_populates="movie")
+
+    
