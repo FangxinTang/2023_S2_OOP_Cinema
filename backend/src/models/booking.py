@@ -1,5 +1,6 @@
 """Create Booking model"""
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db_init import BaseModel
 
 
@@ -9,3 +10,6 @@ class Booking(BaseModel):
     num_seats: Mapped[int] = mapped_column(nullable=False)
     status: Mapped[int] = mapped_column(nullable=False, default=1)
     order_total: Mapped[float] = mapped_column(nullable=False)
+
+    customer_id = mapped_column(ForeignKey("customers.id"))
+    customer = relationship("Customer", back_populates="bookings")
