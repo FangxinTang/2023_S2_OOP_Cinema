@@ -13,3 +13,6 @@ class Booking(BaseModel):
 
     customer_id = mapped_column(ForeignKey("customers.id"))
     customer = relationship("Customer", back_populates="bookings")
+
+    staff_id = mapped_column(ForeignKey("staff.id"))
+    staff = relationship("Staff", back_populates="bookings")
