@@ -21,3 +21,5 @@ class Booking(BaseModel):
     showtime = relationship('ShowTime', back_populates="bookings")
 
     notifications = relationship('Notification', back_populates='booking')
+
+    seats = relationship('Seat', back_populates='booking')
