@@ -19,3 +19,5 @@ class Booking(BaseModel):
 
     showtime_id = mapped_column(ForeignKey('showtime.id'))
     showtime = relationship('ShowTime', back_populates="bookings")
+
+    notifications = relationship('Notification', back_populates='booking')
