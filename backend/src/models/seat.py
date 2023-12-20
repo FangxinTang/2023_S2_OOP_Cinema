@@ -15,3 +15,6 @@ class Seat(BaseModel):
 
     booking_id = mapped_column(ForeignKey('booking.id'))
     booking = relationship('Booking', back_populates='seats')
+
+    hall_id = mapped_column(ForeignKey('hall.id'))
+    hall = relationship('Hall', back_populates='seats')
