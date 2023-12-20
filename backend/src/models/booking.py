@@ -2,6 +2,7 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db_init import BaseModel
+from .payment import Payment
 
 
 class Booking(BaseModel):
@@ -23,3 +24,7 @@ class Booking(BaseModel):
     notifications = relationship('Notification', back_populates='booking')
 
     seats = relationship('Seat', back_populates='booking')
+
+    payment: Mapped['Payment'] = relationship(back_populates='booking')
+
+    
