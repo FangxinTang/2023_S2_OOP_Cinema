@@ -16,7 +16,7 @@ class Booking(BaseModel):
     customer = relationship("Customer", back_populates="bookings")
 
     staff_id = mapped_column(ForeignKey("staff.id"))
-    staff = relationship("Staff", back_populates="bookings")
+    staff_member = relationship("Staff", back_populates="bookings")
 
     showtime_id = mapped_column(ForeignKey('showtime.id'))
     showtime = relationship('ShowTime', back_populates="bookings")
