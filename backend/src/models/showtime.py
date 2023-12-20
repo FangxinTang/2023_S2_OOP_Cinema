@@ -19,4 +19,7 @@ class ShowTime(BaseModel):
 
     bookings = relationship('Booking', back_populates='showtime')
 
+    hall_id =relationship(ForeignKey('hall.id'))
+    hall = relationship('Hall', back_populates='showtimes')
+
     

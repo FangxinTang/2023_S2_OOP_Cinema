@@ -11,3 +11,5 @@ class Hall(BaseModel):
     total_seats: Mapped[int]
 
     seats = relationship('Seat', back_populates='hall')
+    
+    showtimes = relationship('ShowTime', back_populates='hall')
