@@ -11,5 +11,10 @@ class ShowTime(BaseModel):
     start_time: Mapped[time] = mapped_column(nullable=True)
     end_time: Mapped[time] = mapped_column(nullable=True)
 
-    showtime_id = mapped_column(ForeignKey("showtimes.id"))
-    showtime = relationship("Admin", back_populates="showtimes")
+    admin_id = mapped_column(ForeignKey("admin.id"))
+    admin = relationship("Admin", back_populates="showtimes")
+
+    movie_id = mapped_column(ForeignKey('movie.id'))
+    movie = relationship('Movie', back_populates="movies")
+
+    
