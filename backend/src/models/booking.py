@@ -16,3 +16,6 @@ class Booking(BaseModel):
 
     staff_id = mapped_column(ForeignKey("staff.id"))
     staff = relationship("Staff", back_populates="bookings")
+
+    showtime_id = mapped_column(ForeignKey('showtime.id'))
+    showtime = relationship('ShowTime', back_populates="bookings")

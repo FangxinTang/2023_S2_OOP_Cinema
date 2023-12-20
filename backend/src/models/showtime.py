@@ -17,4 +17,6 @@ class ShowTime(BaseModel):
     movie_id = mapped_column(ForeignKey('movie.id'))
     movie = relationship('Movie', back_populates="movies")
 
+    bookings = relationship('Booking', back_populates='showtime')
+
     
