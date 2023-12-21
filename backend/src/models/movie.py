@@ -1,4 +1,5 @@
 """Create Movie model"""
+import uuid
 from datetime import datetime as dt
 from sqlalchemy import String, CheckConstraint, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -50,7 +51,7 @@ class Movie(BaseModel):
         ),
     )
 
-    admin_id = mapped_column(ForeignKey('admin.id'))
+    admin_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('admins.id'))
     admin = relationship('Admin', back_populates='movies')
 
     showtimes = relationship('ShowTime', back_populates="movie")

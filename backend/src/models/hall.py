@@ -1,7 +1,9 @@
 """Create Hall model"""
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import List
+from sqlalchemy.orm import Mapped, relationship
 from database.db_init import BaseModel
+from .seat import Seat
+from .showtime import ShowTime
 
 
 class Hall(BaseModel):
@@ -10,6 +12,6 @@ class Hall(BaseModel):
     name: Mapped[str]
     total_seats: Mapped[int]
 
-    seats = relationship('Seat', back_populates='hall')
+    seats: Mapped[List['Seat']] = relationship(back_populates='hall')
     
-    showtimes = relationship('ShowTime', back_populates='hall')
+    showtimes: Mapped[List['ShowTime']] = relationship(back_populates='hall')

@@ -12,7 +12,7 @@ class Payment(BaseModel):
 
     amount: Mapped[float] = mapped_column(nullable=False)
 
-    booking_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('booking.id'))
+    booking_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('bookings.id'))
     booking: Mapped['Booking'] = relationship(back_populates='payment')
 
     coupon: Mapped['Coupon'] = relationship(back_populates='payment')

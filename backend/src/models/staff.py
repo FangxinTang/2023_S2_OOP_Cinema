@@ -6,6 +6,6 @@ from .booking import Booking
 
 
 class Staff(User):
-    __tablename__ = "staff"
+    __tablename__ = "staff_members"
 
-    bookings: Mapped[List['Booking']] = relationship("Booking", back_populates="staff_member")
+    bookings: Mapped[List['Booking']] = relationship(back_populates="staff_member")

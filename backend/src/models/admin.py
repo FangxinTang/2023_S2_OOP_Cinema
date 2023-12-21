@@ -7,7 +7,7 @@ from .movie import Movie
 
 
 class Admin(User):
-    __tablename__ = "admin"
+    __tablename__ = "admins"
 
     showtimes: Mapped[List['ShowTime']] = relationship(back_populates="admin")
     movies: Mapped[List['Movie']] = relationship(back_populates="admin")

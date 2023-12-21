@@ -10,5 +10,5 @@ from .user import User
 class Customer(User):
     __tablename__ = "customers"
 
-    bookings: Mapped[List['Booking']] = relationship("Booking", back_populates="customers")
-    notifications: Mapped[List['Notification']] = relationship("Notification", back_populates="customers")
+    bookings: Mapped[List['Booking']] = relationship(back_populates="customer")
+    notifications: Mapped[List['Notification']] = relationship(back_populates="customer")

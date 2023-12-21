@@ -12,5 +12,5 @@ class Coupon(Payment):
     expiry_date: Mapped[dt.datetime]
     discount: Mapped[float]
 
-    payment_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('payment.id'))
+    payment_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('payments.id'))
     payment: Mapped['Payment'] = relationship(back_populates='coupon')

@@ -1,8 +1,10 @@
 """Create Seat model"""
+import uuid
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db_init import BaseModel
-
+from .booking import Booking
+from .hall import Hall
 
 class Seat(BaseModel):
     __tablename__ = "seats"
@@ -13,8 +15,8 @@ class Seat(BaseModel):
     is_reserved: Mapped[bool] = mapped_column(nullable=False)
     seat_price: Mapped[float] = mapped_column(nullable=False)
 
-    booking_id = mapped_column(ForeignKey('booking.id'))
-    booking = relationship('Booking', back_populates='seats')
+    booking_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('bookings.id'))
+    booking: Mapped['Booking'] = relationship(back_populates='seats')
 
-    hall_id = mapped_column(ForeignKey('hall.id'))
-    hall = relationship('Hall', back_populates='seats')
+    hall_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('halls.id'))
+    hall: Mapped['Hall'] = relationship(back_populates='seats')
