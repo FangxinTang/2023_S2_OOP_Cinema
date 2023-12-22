@@ -22,3 +22,12 @@ class DebitCard(Payment):
         String(200),
         nullable=False
     )
+
+
+    def __repr__(self):
+        payment_repr = super().__repr__()
+        return (
+            f"<DebitCard(\n {payment_repr}, "
+            f"debit_card_number='****{self.debit_card_number[-4:]}', "
+            f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>"
+        )
