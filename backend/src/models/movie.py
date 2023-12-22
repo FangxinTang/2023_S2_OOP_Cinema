@@ -70,8 +70,12 @@ class Movie(BaseModel):
     def __repr__(self):
         admin_name = self.admin.name if self.admin else None
         showtimes_count = len(self.showtimes) if self.showtimes else 0
-        return(f"<Moive(\n title='{self.title}', "
-               f"duration_min={self.duration_mins}, language='{self.language}', "
-               f"release_date={self.release_date}, country='{self.country}, "
-               f"genre='{self.genre}', admin= {admin_name}), "
-               f"showtimes_count={showtimes_count}>")
+        return(f"<Moive(\n" 
+               f"  title='{self.title}'\n"
+               f"  duration_min={self.duration_mins},\n"
+               f"  language='{self.language}',\n"
+               f"  release_date={self.release_date},\n"
+               f"  country='{self.country},\n "
+               f"  genre='{self.genre}',\n"
+               f"  admin= {admin_name},\n"
+               f"  showtimes_count={showtimes_count}>")

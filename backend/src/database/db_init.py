@@ -21,7 +21,7 @@ class BaseModel(Base):
 
     datetime_modified: Mapped[dt.datetime] = mapped_column(
         nullable=False,
-        server_default=sa_sql.func.now(),
+        server_default=sa_sql.func.now(), # pylint: ignore[not-callable]
         server_onupdate=sa_sql.func.now()
     )
 
