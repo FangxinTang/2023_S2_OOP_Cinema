@@ -34,4 +34,9 @@ class Booking(BaseModel):
 
     payment: Mapped['Payment'] = relationship(back_populates='booking')
 
-    
+    def __repr__(self):
+        seats_booked = len(self.seats) if self.seats else 0
+        return (f"<Booking(num_seats={self.num_seats}, status={self.status}, order_total={self.order_total}, "
+                f"customer_id={self.customer_id}, staff_member_id={self.staff_member_id}, "
+                f"showtime_id={self.showtime_id}, seats_booked={seats_booked}, "
+                f"payment_id={self.payment.id if self.payment else 'No payment'})>")
