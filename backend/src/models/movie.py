@@ -1,11 +1,20 @@
 """Create Movie model"""
 import uuid
 from datetime import datetime as dt
+from typing import List
 from sqlalchemy import String, CheckConstraint, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db_init import BaseModel
+from .admin import Admin
+from .showtime import ShowTime
 
 class Movie(BaseModel):
+    """Representing a movie in the database.
+    
+    This class maps to the 'movies' table in the database and includes details such as title, description, duration, 
+    language, release date, country, and genre. It also includes a relationship with the 'Admin' class (admin who added the movie)
+    and 'ShowTime' class (showtimes for the movie).
+    """
     __tablename__ = "movies"
 
     title: Mapped[str] = mapped_column(
@@ -51,9 +60,18 @@ class Movie(BaseModel):
         ),
     )
 
+    # many-to-one
     admin_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('admins.id'))
-    admin = relationship('Admin', back_populates='movies')
+    admin: Mapped['Admin'] = relationship(back_populates='movies')
 
-    showtimes = relationship('ShowTime', back_populates="movie")
+    # one-to-many
+    showtimes: Mapped[List['ShowTime']] = relationship(back_populates="movie")
 
-    
+    def __repr__(self):
+        admin_name = self.admin.name if self.admin else None
+        showtimes_count = len(self.showtimes) if self.showtimes else 0
+        return(f"<Moive(\n title='{self.title}', "
+               f"duration_min={self.duration_mins}, language='{self.language}', "
+               f"release_date={self.release_date}, country='{self.country}, "
+               f"genre='{self.genre}', admin= {admin_name}), "
+               f"showtimes_count={showtimes_count}>")
