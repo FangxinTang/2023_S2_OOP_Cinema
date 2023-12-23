@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing_extensions import Annotated
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, composite
-from database.db_init import BaseModel  # import from an external package
+from .base_model import BaseModel  
 
 
 RequiredUniqueString = Annotated[

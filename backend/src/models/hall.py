@@ -2,9 +2,9 @@
 from typing import List
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.db_init import BaseModel
-from .seat import Seat
-from .showtime import ShowTime
+from .base_model import BaseModel
+# from .seat import Seat
+# from .showtime import ShowTime
 
 
 class Hall(BaseModel):

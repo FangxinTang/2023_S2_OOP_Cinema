@@ -4,9 +4,10 @@ from datetime import datetime as dt
 from typing import List
 from sqlalchemy import String, CheckConstraint, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.db_init import BaseModel
-from .admin import Admin
-from .showtime import ShowTime
+from .base_model import BaseModel
+from ..constance import NIL_UUID
+# from .admin import Admin
+# from .showtime import ShowTime
 
 class Movie(BaseModel):
     """Representing a movie in the database.
@@ -79,3 +80,21 @@ class Movie(BaseModel):
                f"  genre='{self.genre}',\n"
                f"  admin= {admin_name},\n"
                f"  showtimes_count={showtimes_count}>")
+    
+
+# ==== DUMMY DATA ==== #
+DUMMY_DATA: List[tuple] = [
+    (
+        Movie,
+        {
+            "title": "Space Odyssey",
+            "description": "An epic space exploration journey.",
+            "duration_mins": 150,
+            "language": "English",
+            "release_date": dt.datetime(2023, 1, 1),
+            "country": "USA",
+            "genre": "Sci-Fi",
+            "admin_id": NIL_UUID
+        },
+    ),
+]

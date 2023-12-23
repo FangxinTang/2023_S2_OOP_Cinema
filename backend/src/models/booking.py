@@ -3,13 +3,13 @@ import uuid
 from typing import List
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.db_init import BaseModel
-from .payment import Payment
-from .staff import Staff
-from .customer import Customer
-from .showtime import ShowTime
-from .notification import Notification
-from .seat import Seat
+from .base_model import BaseModel
+# from .payment import Payment
+# from .staff import Staff
+# from .customer import Customer
+# from .showtime import ShowTime
+# from .notification import Notification
+# from .seat import Seat
 
 
 class Booking(BaseModel):

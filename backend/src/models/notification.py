@@ -2,9 +2,9 @@
 import uuid
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.db_init import BaseModel
-from .customer import Customer
-from .booking import Booking
+from .base_model import BaseModel
+# from .customer import Customer
+# from .booking import Booking
 
 
 class Notification(BaseModel):

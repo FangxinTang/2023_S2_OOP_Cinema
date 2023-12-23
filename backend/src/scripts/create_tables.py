@@ -12,7 +12,7 @@ from models.user import User
 from models.admin import Admin
 from models.staff import Staff
 from models.customer import Customer
-from models.movies import Movie
+from models.movie import Movie
 from models.showtime import ShowTime
 from models.booking import Booking
 from models.hall import Hall

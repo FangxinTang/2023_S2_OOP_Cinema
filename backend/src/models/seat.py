@@ -2,9 +2,9 @@
 import uuid
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.db_init import BaseModel
-from .booking import Booking
-from .hall import Hall
+from .base_model import BaseModel
+# from .booking import Booking
+# from .hall import Hall
 
 class Seat(BaseModel):
     __tablename__ = "seats"

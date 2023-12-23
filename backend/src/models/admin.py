@@ -2,8 +2,8 @@
 from typing import List
 from sqlalchemy.orm import Mapped, relationship
 from .user import User
-from .showtime import ShowTime
-from .movie import Movie
+# from .showtime import ShowTime
+# from .movie import Movie
 
 
 class Admin(User):
