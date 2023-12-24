@@ -1,14 +1,13 @@
 """Initialize the database"""
 import uuid
 import datetime as dt
-from dataclasses import dataclass
 
 from typing import List
 from typing_extensions import Annotated
 
-from sqlalchemy import create_engine, String, CheckConstraint, ForeignKey
+from sqlalchemy import create_engine, String, Float, CheckConstraint, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Mapped, mapped_column, composite, relationship
+from sqlalchemy.orm import sessionmaker, Mapped, mapped_column, relationship, declared_attr
 from sqlalchemy.sql import func
 
 
@@ -32,7 +31,6 @@ BankCardUniqueString = Annotated[
     mapped_column(String(200), nullable=False, unique=True)]
 
 
-
 #################### Base Model #####################
 class BaseModel(Base):
     __abstract__ = True
@@ -51,7 +49,7 @@ class BaseModel(Base):
 
     datetime_created: Mapped[dt.datetime] = mapped_column(
         nullable=False,
-        server_default=sa_sql.func.now()
+        server_default=func.now()
     )
 
     def __getitem__(self, key):
@@ -83,13 +81,6 @@ class BaseModel(Base):
 
 
 #################### Person (Abstract) Model #####################
-@dataclass
-class AddressDataClass:
-    """Data class representing a postal address"""
-    line_1: str
-    line_2: str
-    country: str
-
 class Person(BaseModel):
     """Abstract base class representing a person."""
 
@@ -100,21 +91,14 @@ class Person(BaseModel):
     phone: Mapped[PersonRequiredUniqueString]
 
     # Define address components as individual columns
-    address_line_1: Mapped[str] = mapped_column()
-    address_line_2: Mapped[str] = mapped_column()
-    country: Mapped[str] = mapped_column()
-
-    # Use composite to create an Address object
-    address: Mapped[AddressDataClass] = composite(
-        "address_line_1",
-        "address_line_2",
-        "country"
-    )
+    address_line_1: Mapped[str] = mapped_column(String(255))
+    address_line_2: Mapped[str] = mapped_column(String(255))
+    country: Mapped[str] = mapped_column(String(128))
 
     def __repr__(self):
         """Return a string representation of the Person object."""
         address = f"{self.address_line_1}, {self.address_line_2}, {self.country}"
-        return f"<Person(\n name={self.name}, email={self.email}, phone={self.phone}, address='{address}')>"
+        return f"<Person(\n name={self.name}, email={self.email}, phone={self.phone}, address={address}')>"
 
 
 #################### User (Abstract) Model #####################
@@ -382,14 +366,26 @@ class Booking(BaseModel):
 class Payment(BaseModel):
     __abstract__ = True
 
-    amount: Mapped[float] = mapped_column(nullable=False)
+    amount: Mapped[float] = mapped_column(Float, nullable=False)
 
     # Relationship with Booking: 1 to 1:
-    booking_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('bookings.id'))
-    booking: Mapped['Booking'] = relationship(back_populates='payment')
+    @declared_attr
+    def booking_id(cls):
+        return mapped_column(ForeignKey('bookings.id'), nullable=False)
+    
+    @declared_attr
+    def booking(cls):
+        return relationship('Booking', back_populates='payment')
+
 
     # Relationship with Coupon: 1 to 1:
-    coupon: Mapped['Coupon'] = relationship(back_populates='payment')
+    @declared_attr
+    def coupon_id(cls):
+        return mapped_column(ForeignKey('coupons.id'), nullable=True)
+    
+    @declared_attr
+    def coupon(cls):
+        return relationship('Coupon', back_populates='payment', uselist=False)
 
     def __repr__(self):
         booking_info = f"Booking ID: {self.booking_id}" if self.booking_id else "No Booking"
@@ -403,10 +399,9 @@ class CreditCard(Payment):
 
     credit_card_number: Mapped[BankCardUniqueString]
     expiry_date: Mapped[dt.date]
-    name_on_card : Mapped[str] = mapped_column(
-        String(200),
-        nullable=False
-    )
+    name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
+
+    # coupon = relationship('Coupon', back_populates='credit_card', uselist=False)
 
     def __repr__(self):
         payment_repr = super().__repr__()
@@ -422,12 +417,10 @@ class DebitCard(Payment):
     __tablename__ = "debit_cards"
 
     debit_card_number: Mapped[BankCardUniqueString]
-    expiry_date: Mapped[dt.datetime]
-    name_on_card : Mapped[str] = mapped_column(
-        String(200),
-        nullable=False
-    )
+    expiry_date: Mapped[dt.date]
+    name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
 
+    # coupon = relationship('Coupon', back_populates='debit_card', uselist=False)
 
     def __repr__(self):
         payment_repr = super().__repr__()
@@ -439,21 +432,25 @@ class DebitCard(Payment):
 
 
 #################### Coupon Model #####################
-class Coupon(Payment):
+class Coupon(BaseModel):
     __tablename__ = "coupons"
 
     expiry_date: Mapped[dt.datetime] = mapped_column(nullable=False)
     discount: Mapped[float] = mapped_column(nullable=False)
 
-    payment_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('payments.id'))
-    payment: Mapped['Payment'] = relationship(back_populates='coupon')
+    # credit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('credit_cards.id'), nullable=True)
+    # credit_card: Mapped['CreditCard'] = relationship('CreditCard', back_populates='coupon', uselist=False)
+
+    # debit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('debit_cards.id'), nullable=True)
+    # debit_card: Mapped['DebitCard'] = relationship('DebitCard', back_populates='coupon', uselist=False)
 
     def __repr__(self):
-        payment_info = f"Payment ID: {self.payment_id}" if self.payment_id else "No Payment"
-        return (f"<Coupon(expiry_date={self.expiry_date}, discount={self.discount}, {payment_info})>")
+        # credit_card_info = f"credit_card_number='****{self.credit_card.credit_card_number[-4:]}'" if self.credit_card else "No CreditCard"
+        # debit_card_info = f"debit_card_number='****{self.debit_card.debit_card_number[-4:]}'" if self.debit_card else "No DebitCard"
+        return (f"<Coupon(expiry_date={self.expiry_date}, discount={self.discount})>")
 
 ######################
     
-    
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
+
+# Base.metadata.create_all(engine)
+# Session = sessionmaker(bind=engine)
