@@ -88,9 +88,9 @@ class Person(BaseModel):
     phone: Mapped[PersonRequiredUniqueString]
 
     # Define address components as individual columns
-    address_line_1: Mapped[str] = mapped_column(String(255))
-    address_line_2: Mapped[str] = mapped_column(String(255))
-    country: Mapped[str] = mapped_column(String(128))
+    address_line_1: Mapped[str] = mapped_column(String(255), nullable=False)
+    address_line_2: Mapped[str] = mapped_column(String(255), nullable=True)
+    country: Mapped[str] = mapped_column(String(128), nullable=False)
 
     def __repr__(self):
         """Return a string representation of the Person object."""
@@ -306,7 +306,6 @@ class Seat(BaseModel):
     __tablename__ = "seats"
 
     seat_name: Mapped[str] = mapped_column(nullable=False, unique=True)
-    total_seats: Mapped[int] = mapped_column(nullable=False)
     seat_type: Mapped[int] = mapped_column(nullable=False)
     is_reserved: Mapped[bool] = mapped_column(nullable=False)
     seat_price: Mapped[float] = mapped_column(nullable=False)
@@ -432,7 +431,7 @@ class DebitCard(Payment):
 class Coupon(BaseModel):
     __tablename__ = "coupons"
 
-    expiry_date: Mapped[dt.datetime] = mapped_column(nullable=False)
+    expiry_date: Mapped[dt.date] = mapped_column(nullable=False)
     discount: Mapped[float] = mapped_column(nullable=False)
 
     credit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('credit_cards.id'), nullable=True)
