@@ -389,7 +389,7 @@ class Payment(BaseModel):
 
     def __repr__(self):
         booking_info = f"Booking ID: {self.booking_id}" if self.booking_id else "No Booking"
-        coupon_info = f"Coupon ID: {self.coupon.id}" if self.coupon else "No Coupon"
+        coupon_info = f"Coupon ID: {self.coupon_id}" if self.coupon else "No Coupon"
         return (f"<Payment(amount={self.amount}, {booking_info}, {coupon_info})>")
 
 
@@ -409,8 +409,7 @@ class CreditCard(Payment):
         return (
             f"<CreditCard(\n {payment_repr}, "
             f"credit_card_number='****{self.credit_card_number[-4:]}', "
-            f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>"
-        )
+            f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>")
 
 
 #################### DebitCard Model #####################
@@ -429,8 +428,7 @@ class DebitCard(Payment):
         return (
             f"<DebitCard(\n {payment_repr}, "
             f"debit_card_number='****{self.debit_card_number[-4:]}', "
-            f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>"
-        )
+            f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>")
 
 
 #################### Coupon Model #####################
