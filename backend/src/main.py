@@ -1,2 +1,4 @@
-from litestar import Litestar, get_version
+# from database.db_init import init_db
+
+# init_db()
 

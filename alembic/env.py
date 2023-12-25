@@ -5,11 +5,30 @@ from sqlalchemy import pool
 
 from alembic import context
 
-# import os
-# import sys
-# print("cwd: ", os.getcwd())
-# print('Python Path', sys.path)
+from src.models.base_for_all import Base
 
+import os
+import sys
+print("cwd: ", os.getcwd())
+print('Python Path', sys.path)
+
+from models.admin import Admin
+from models.base_model import BaseModel
+from models.booking import Booking
+# from models.coupon import Coupon
+# from models.credit_card import CreditCard
+from models.customer import Customer
+# from models.debit_card import DebitCard
+from models.hall import Hall
+from models.movie import Movie
+from models.notification import Notification
+from models.payment import Payment
+from models.person import Person
+from models.seat import Seat
+from models.showtime import ShowTime
+from models.staff import Staff
+from models.user import User
+from models.test import Test
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -21,7 +40,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from src.database.db_init import Base
+
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
