@@ -1,17 +1,17 @@
+
+"""Dummy Data for testing"""
 import uuid
 import datetime as dt
 from typing import List, Tuple, Type, Dict, Any
-from sqlalchemy.ext.declarative import DeclarativeMeta
-from database.models import Admin, Staff, Customer, Notification, Movie, ShowTime, Hall, Seat, Booking, CreditCard, DebitCard, Coupon
+from database.models import *
 
-ModelType = Type[DeclarativeMeta]
+ModelType = Type[Base]
 NIL_UUID = uuid.UUID("00000000-0000-0000-0000-000000000000")
 
-DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
+DUMMY_DATA: List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Admin,
         {
-            "id": NIL_UUID,
             "name": "Sam",
             "email": "sam@demo.com",
             "phone": "123456789",
@@ -25,7 +25,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Staff,
         {
-            "id": NIL_UUID,
             "name": "Mary",
             "email": "mary@demo.com",
             "phone": "223456789",
@@ -39,7 +38,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Customer,
         {
-            "id": NIL_UUID,
             "name": "Lil",
             "email": "lil@demo.com",
             "phone": "323456789",
@@ -53,7 +51,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Notification,
         {
-            "id": NIL_UUID,
             "content": "Ticket booked.",
             "customer_id": NIL_UUID
         }
@@ -61,7 +58,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Movie,
         {
-            "id": NIL_UUID,
             "title": "Aquaman 2",
             "description": "The sequel to the 2018 film 'Aquaman', following the title character's post-Justice League adventures.",
             "duration_mins": 143,
@@ -75,7 +71,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         ShowTime,
         {
-            "id": NIL_UUID,
             "show_date": dt.date(2023, 12, 26),
             "start_time": dt.time(20, 0),
             "end_time": dt.time(22, 23),
@@ -87,7 +82,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Hall,
         {
-            "id": NIL_UUID,
             "name": "East Hall",
             "total_seats": 80
         }
@@ -95,7 +89,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Seat,
         {
-            "id": NIL_UUID,
             "seat_name": "A1",
             "seat_type": "Regular",
             "is_reserved": True,
@@ -107,9 +100,8 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Booking,
         {
-            "id": NIL_UUID,
             "num_seats": 2,
-            "status": 1, #confirmed
+            "status": 1,  # confirmed
             "order_total": 60.0,
             "customer_id": NIL_UUID,
             "staff_member_id": NIL_UUID,
@@ -119,7 +111,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         CreditCard,
         {
-            "id": NIL_UUID,
             "amount": 30.0,
             "credit_card_number": "1111222233334444",
             "expiry_date": dt.date(2024, 6),
@@ -129,7 +120,6 @@ DUMMY_DATA:List[Tuple[ModelType, Dict[str, Any]]] = [
     (
         Coupon,
         {
-            "id": NIL_UUID,
             "expiry_date": dt.date(2024, 6),
             "discount": 50.0,
             "credit_card_id": NIL_UUID,
