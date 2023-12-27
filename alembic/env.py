@@ -3,12 +3,18 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
+import os
+import sys
+print("cwd: ", os.getcwd())
+print('Python Path', sys.path)
+root_directory = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+backend_src_path = os.path.join(root_directory, 'backend', 'src')
+sys.path.append(backend_src_path)
+from database.models import Base
+
 from alembic import context
 
-# import os
-# import sys
-# print("cwd: ", os.getcwd())
-# print('Python Path', sys.path)
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,7 +27,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from src.database.db_init import Base
+
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
