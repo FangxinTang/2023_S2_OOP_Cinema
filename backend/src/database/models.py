@@ -374,19 +374,19 @@ class Payment(BaseModel):
         return relationship('Booking', back_populates='payment')
 
 
-    # Relationship with Coupon: 1 to 1:
-    @declared_attr
-    def coupon_id(cls):
-        return mapped_column(ForeignKey('coupons.id'), nullable=True)
+    # # Relationship with Coupon: 1 to 1:
+    # @declared_attr
+    # def coupon_id(cls):
+    #     return mapped_column(ForeignKey('coupons.id'), nullable=True)
     
-    @declared_attr
-    def coupon(cls):
-        return relationship('Coupon', back_populates='payment', uselist=False)
+    # @declared_attr
+    # def coupon(cls):
+    #     return relationship('Coupon', back_populates='payment', uselist=False)
 
     def __repr__(self):
         booking_info = f"Booking ID: {self.booking_id}" if self.booking_id else "No Booking"
-        coupon_info = f"Coupon ID: {self.coupon_id}" if self.coupon else "No Coupon"
-        return (f"<Payment(amount={self.amount}, {booking_info}, {coupon_info})>")
+        # coupon_info = f"Coupon ID: {self.coupon_id}" if self.coupon else "No Coupon"
+        return (f"<Payment(amount={self.amount}, {booking_info})>")
 
 
 #################### CreditCard Model #####################
@@ -397,8 +397,8 @@ class CreditCard(Payment):
     expiry_date: Mapped[dt.date]
     name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
 
-    coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
-    coupon = relationship('Coupon', back_populates='credit_card', uselist=False)
+    # coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
+    # coupon = relationship('Coupon', back_populates='credit_card', uselist=False)
 
     def __repr__(self):
         payment_repr = super().__repr__()
@@ -416,8 +416,8 @@ class DebitCard(Payment):
     expiry_date: Mapped[dt.date]
     name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
 
-    coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
-    coupon = relationship('Coupon', back_populates='debit_card', uselist=False)
+    # coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
+    # coupon = relationship('Coupon', back_populates='debit_card', uselist=False)
 
     def __repr__(self):
         payment_repr = super().__repr__()
@@ -428,22 +428,22 @@ class DebitCard(Payment):
 
 
 #################### Coupon Model #####################
-class Coupon(BaseModel):
-    __tablename__ = "coupons"
+# class Coupon(BaseModel):
+#     __tablename__ = "coupons"
 
-    expiry_date: Mapped[dt.date] = mapped_column(nullable=False)
-    discount: Mapped[float] = mapped_column(nullable=False)
+#     expiry_date: Mapped[dt.date] = mapped_column(nullable=False)
+#     discount: Mapped[float] = mapped_column(nullable=False)
 
-    credit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('credit_cards.id'), nullable=True)
-    credit_card: Mapped['CreditCard'] = relationship('CreditCard', back_populates='coupon', uselist=False)
+#     credit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('credit_cards.id'), nullable=True)
+#     credit_card: Mapped['CreditCard'] = relationship('CreditCard', back_populates='coupon', uselist=False)
 
-    debit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('debit_cards.id'), nullable=True)
-    debit_card: Mapped['DebitCard'] = relationship('DebitCard', back_populates='coupon', uselist=False)
+#     debit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('debit_cards.id'), nullable=True)
+#     debit_card: Mapped['DebitCard'] = relationship('DebitCard', back_populates='coupon', uselist=False)
 
-    def __repr__(self):
-        credit_card_info = f"credit_card_number='****{self.credit_card.credit_card_number[-4:]}'" if self.credit_card else "No CreditCard"
-        debit_card_info = f"debit_card_number='****{self.debit_card.debit_card_number[-4:]}'" if self.debit_card else "No DebitCard"
-        return (f"<Coupon(expiry_date={self.expiry_date}, discount={self.discount}, credit_card_info={credit_card_info}, debit_card_info={debit_card_info})>")
+#     def __repr__(self):
+#         credit_card_info = f"credit_card_number='****{self.credit_card.credit_card_number[-4:]}'" if self.credit_card else "No CreditCard"
+#         debit_card_info = f"debit_card_number='****{self.debit_card.debit_card_number[-4:]}'" if self.debit_card else "No DebitCard"
+#         return (f"<Coupon(expiry_date={self.expiry_date}, discount={self.discount}, credit_card_info={credit_card_info}, debit_card_info={debit_card_info})>")
 
 ###################### Test Model ###############
 # class TestModel(BaseModel):
