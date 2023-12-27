@@ -77,6 +77,102 @@ class BaseModel(Base):
         return iter(self.keys())
 
 
+#################### Payment(Abstract) Model #####################
+class Payment(BaseModel):
+    __abstract__ = True
+
+    amount: Mapped[float] = mapped_column(Float, nullable=False)
+
+#     # Relationship with Booking: 1 to 1:
+#     @declared_attr
+#     def booking_id(cls):
+#         return mapped_column(ForeignKey('bookings.id'), nullable=False)
+    
+#     @declared_attr
+#     def booking(cls):
+#         return relationship('Booking', back_populates='payment')
+
+
+#     # # Relationship with Coupon: 1 to 1:
+#     # @declared_attr
+#     # def coupon_id(cls):
+#     #     return mapped_column(ForeignKey('coupons.id'), nullable=True)
+    
+#     # @declared_attr
+#     # def coupon(cls):
+#     #     return relationship('Coupon', back_populates='payment', uselist=False)
+
+#     def __repr__(self):
+#         booking_info = f"Booking ID: {self.booking_id}" if self.booking_id else "No Booking"
+#         # coupon_info = f"Coupon ID: {self.coupon_id}" if self.coupon else "No Coupon"
+#         return (f"<Payment(amount={self.amount}, {booking_info})>")
+
+
+# #################### CreditCard Model #####################
+class CreditCard(Payment):
+    __tablename__ = "credit_cards"
+
+    credit_card_number: Mapped[BankCardUniqueString]
+    expiry_date: Mapped[dt.date]
+    name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
+
+#     # coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
+#     # coupon = relationship('Coupon', back_populates='credit_card', uselist=False)
+
+#     def __repr__(self):
+#         payment_repr = super().__repr__()
+#         return (
+#             f"<CreditCard(\n {payment_repr}, "
+#             f"credit_card_number='****{self.credit_card_number[-4:]}', "
+#             f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>")
+
+
+# #################### DebitCard Model #####################
+class DebitCard(Payment):
+    __tablename__ = "debit_cards"
+
+    debit_card_number: Mapped[BankCardUniqueString]
+    expiry_date: Mapped[dt.date]
+    name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
+
+#     # coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
+#     # coupon = relationship('Coupon', back_populates='debit_card', uselist=False)
+
+#     def __repr__(self):
+#         payment_repr = super().__repr__()
+#         return (
+#             f"<DebitCard(\n {payment_repr}, "
+#             f"debit_card_number='****{self.debit_card_number[-4:]}', "
+#             f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>")
+
+
+#################### Coupon Model #####################
+class Coupon(BaseModel):
+    __tablename__ = "coupons"
+
+    expiry_date: Mapped[dt.date] = mapped_column(nullable=False)
+    discount: Mapped[float] = mapped_column(nullable=False)
+
+#     credit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('credit_cards.id'), nullable=True)
+#     credit_card: Mapped['CreditCard'] = relationship('CreditCard', back_populates='coupon', uselist=False)
+
+#     debit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('debit_cards.id'), nullable=True)
+#     debit_card: Mapped['DebitCard'] = relationship('DebitCard', back_populates='coupon', uselist=False)
+
+#     def __repr__(self):
+#         credit_card_info = f"credit_card_number='****{self.credit_card.credit_card_number[-4:]}'" if self.credit_card else "No CreditCard"
+#         debit_card_info = f"debit_card_number='****{self.debit_card.debit_card_number[-4:]}'" if self.debit_card else "No DebitCard"
+#         return (f"<Coupon(expiry_date={self.expiry_date}, discount={self.discount}, credit_card_info={credit_card_info}, debit_card_info={debit_card_info})>")
+
+###################### Test Model ###############
+# class TestModel(BaseModel):
+#     __tablename__ = "test"
+
+#     name: Mapped[str] = mapped_column(
+#         default="test info"
+#     ) 
+
+
 #################### Person (Abstract) Model #####################
 class Person(BaseModel):
     """Abstract base class representing a person."""
@@ -219,11 +315,11 @@ class Movie(BaseModel):
         ),
     )
 
-    # many-to-one
+    # # many-to-one
     admin_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('admins.id'))
     admin: Mapped['Admin'] = relationship(back_populates='movies')
 
-    # one-to-many
+    # # one-to-many
     showtimes: Mapped[List['ShowTime']] = relationship(back_populates="movie")
 
     def __repr__(self):
@@ -240,7 +336,7 @@ class Movie(BaseModel):
                f"  showtimes_count={showtimes_count}>")
     
 
-#################### Showtime Model #####################
+# #################### Showtime Model #####################
 class ShowTime(BaseModel):
     __tablename__ = "showtimes"
 
@@ -256,7 +352,7 @@ class ShowTime(BaseModel):
     movie_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('movies.id'))
     movie: Mapped['Movie'] = relationship(back_populates="showtimes")
 
-    # Relationship with Hall - Many to one
+    # # Relationship with Hall - Many to one
     hall_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('halls.id'))
     hall: Mapped['Hall'] = relationship(back_populates='showtimes')
 
@@ -306,7 +402,7 @@ class Seat(BaseModel):
     __tablename__ = "seats"
 
     seat_name: Mapped[str] = mapped_column(nullable=False, unique=True)
-    seat_type: Mapped[int] = mapped_column(nullable=False)
+    seat_type: Mapped[str] = mapped_column(nullable=False)
     is_reserved: Mapped[bool] = mapped_column(nullable=False)
     seat_price: Mapped[float] = mapped_column(nullable=False)
 
@@ -348,110 +444,13 @@ class Booking(BaseModel):
 
     seats: Mapped[List['Seat']] = relationship(back_populates='booking')
 
-    payment: Mapped['Payment'] = relationship(back_populates='booking')
+    # payment: Mapped['Payment'] = relationship(back_populates='booking')
 
     def __repr__(self):
         seats_booked = len(self.seats) if self.seats else 0
         return (f"<Booking(num_seats={self.num_seats}, status={self.status}, order_total={self.order_total}, "
                 f"customer_id={self.customer_id}, staff_member_id={self.staff_member_id}, "
                 f"showtime_id={self.showtime_id}, seats_booked={seats_booked}, "
-                f"payment_id={self.payment.id if self.payment else 'No payment'})>")
+                # f"payment_id={self.payment.id if self.payment else 'No payment'})>"
+            )
 
-
-#################### Payment(Abstract) Model #####################
-class Payment(BaseModel):
-    __abstract__ = True
-
-    amount: Mapped[float] = mapped_column(Float, nullable=False)
-
-    # Relationship with Booking: 1 to 1:
-    @declared_attr
-    def booking_id(cls):
-        return mapped_column(ForeignKey('bookings.id'), nullable=False)
-    
-    @declared_attr
-    def booking(cls):
-        return relationship('Booking', back_populates='payment')
-
-
-    # # Relationship with Coupon: 1 to 1:
-    # @declared_attr
-    # def coupon_id(cls):
-    #     return mapped_column(ForeignKey('coupons.id'), nullable=True)
-    
-    # @declared_attr
-    # def coupon(cls):
-    #     return relationship('Coupon', back_populates='payment', uselist=False)
-
-    def __repr__(self):
-        booking_info = f"Booking ID: {self.booking_id}" if self.booking_id else "No Booking"
-        # coupon_info = f"Coupon ID: {self.coupon_id}" if self.coupon else "No Coupon"
-        return (f"<Payment(amount={self.amount}, {booking_info})>")
-
-
-#################### CreditCard Model #####################
-class CreditCard(Payment):
-    __tablename__ = "credit_cards"
-
-    credit_card_number: Mapped[BankCardUniqueString]
-    expiry_date: Mapped[dt.date]
-    name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
-
-    # coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
-    # coupon = relationship('Coupon', back_populates='credit_card', uselist=False)
-
-    def __repr__(self):
-        payment_repr = super().__repr__()
-        return (
-            f"<CreditCard(\n {payment_repr}, "
-            f"credit_card_number='****{self.credit_card_number[-4:]}', "
-            f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>")
-
-
-#################### DebitCard Model #####################
-class DebitCard(Payment):
-    __tablename__ = "debit_cards"
-
-    debit_card_number: Mapped[BankCardUniqueString]
-    expiry_date: Mapped[dt.date]
-    name_on_card : Mapped[str] = mapped_column(String(200), nullable=False)
-
-    # coupon_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('coupons.id'), nullable=True)
-    # coupon = relationship('Coupon', back_populates='debit_card', uselist=False)
-
-    def __repr__(self):
-        payment_repr = super().__repr__()
-        return (
-            f"<DebitCard(\n {payment_repr}, "
-            f"debit_card_number='****{self.debit_card_number[-4:]}', "
-            f"expiry_date={self.expiry_date}, name_on_card='{self.name_on_card}')>")
-
-
-#################### Coupon Model #####################
-# class Coupon(BaseModel):
-#     __tablename__ = "coupons"
-
-#     expiry_date: Mapped[dt.date] = mapped_column(nullable=False)
-#     discount: Mapped[float] = mapped_column(nullable=False)
-
-#     credit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('credit_cards.id'), nullable=True)
-#     credit_card: Mapped['CreditCard'] = relationship('CreditCard', back_populates='coupon', uselist=False)
-
-#     debit_card_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('debit_cards.id'), nullable=True)
-#     debit_card: Mapped['DebitCard'] = relationship('DebitCard', back_populates='coupon', uselist=False)
-
-#     def __repr__(self):
-#         credit_card_info = f"credit_card_number='****{self.credit_card.credit_card_number[-4:]}'" if self.credit_card else "No CreditCard"
-#         debit_card_info = f"debit_card_number='****{self.debit_card.debit_card_number[-4:]}'" if self.debit_card else "No DebitCard"
-#         return (f"<Coupon(expiry_date={self.expiry_date}, discount={self.discount}, credit_card_info={credit_card_info}, debit_card_info={debit_card_info})>")
-
-###################### Test Model ###############
-# class TestModel(BaseModel):
-#     __tablename__ = "test"
-
-#     name: Mapped[str] = mapped_column(
-#         default="test info"
-#     ) 
-
-# Base.metadata.create_all(engine)
-# Session = sessionmaker(bind=engine)

@@ -1,8 +1,8 @@
-"""create all tables
+"""create tables
 
-Revision ID: 970c5b17d56a
+Revision ID: bd033b247a0c
 Revises: 
-Create Date: 2023-12-25 15:14:00.241948
+Create Date: 2023-12-27 17:10:29.825740
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '970c5b17d56a'
+revision: str = 'bd033b247a0c'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('email', sa.String(length=128), nullable=False),
     sa.Column('phone', sa.String(length=128), nullable=False),
     sa.Column('address_line_1', sa.String(length=255), nullable=False),
-    sa.Column('address_line_2', sa.String(length=255), nullable=False),
+    sa.Column('address_line_2', sa.String(length=255), nullable=True),
     sa.Column('country', sa.String(length=128), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
@@ -39,12 +39,23 @@ def upgrade() -> None:
     sa.UniqueConstraint('username')
     )
     op.create_table('coupons',
-    sa.Column('expiry_date', sa.DateTime(), nullable=False),
+    sa.Column('expiry_date', sa.Date(), nullable=False),
     sa.Column('discount', sa.Float(), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('datetime_created', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('credit_cards',
+    sa.Column('credit_card_number', sa.String(length=200), nullable=False),
+    sa.Column('expiry_date', sa.Date(), nullable=False),
+    sa.Column('name_on_card', sa.String(length=200), nullable=False),
+    sa.Column('amount', sa.Float(), nullable=False),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('datetime_created', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('credit_card_number')
     )
     op.create_table('customers',
     sa.Column('username', sa.String(length=128), nullable=False),
@@ -53,7 +64,7 @@ def upgrade() -> None:
     sa.Column('email', sa.String(length=128), nullable=False),
     sa.Column('phone', sa.String(length=128), nullable=False),
     sa.Column('address_line_1', sa.String(length=255), nullable=False),
-    sa.Column('address_line_2', sa.String(length=255), nullable=False),
+    sa.Column('address_line_2', sa.String(length=255), nullable=True),
     sa.Column('country', sa.String(length=128), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
@@ -63,6 +74,17 @@ def upgrade() -> None:
     sa.UniqueConstraint('password'),
     sa.UniqueConstraint('phone'),
     sa.UniqueConstraint('username')
+    )
+    op.create_table('debit_cards',
+    sa.Column('debit_card_number', sa.String(length=200), nullable=False),
+    sa.Column('expiry_date', sa.Date(), nullable=False),
+    sa.Column('name_on_card', sa.String(length=200), nullable=False),
+    sa.Column('amount', sa.Float(), nullable=False),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('datetime_created', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('debit_card_number')
     )
     op.create_table('halls',
     sa.Column('name', sa.String(length=50), nullable=False),
@@ -80,7 +102,7 @@ def upgrade() -> None:
     sa.Column('email', sa.String(length=128), nullable=False),
     sa.Column('phone', sa.String(length=128), nullable=False),
     sa.Column('address_line_1', sa.String(length=255), nullable=False),
-    sa.Column('address_line_2', sa.String(length=255), nullable=False),
+    sa.Column('address_line_2', sa.String(length=255), nullable=True),
     sa.Column('country', sa.String(length=128), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
@@ -138,36 +160,6 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['staff_member_id'], ['staff_members.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('credit_cards',
-    sa.Column('credit_card_number', sa.String(length=200), nullable=False),
-    sa.Column('expiry_date', sa.Date(), nullable=False),
-    sa.Column('name_on_card', sa.String(length=200), nullable=False),
-    sa.Column('amount', sa.Float(), nullable=False),
-    sa.Column('booking_id', sa.Uuid(), nullable=False),
-    sa.Column('coupon_id', sa.Uuid(), nullable=True),
-    sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.Column('datetime_created', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.ForeignKeyConstraint(['booking_id'], ['bookings.id'], ),
-    sa.ForeignKeyConstraint(['coupon_id'], ['coupons.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('credit_card_number')
-    )
-    op.create_table('debit_cards',
-    sa.Column('debit_card_number', sa.String(length=200), nullable=False),
-    sa.Column('expiry_date', sa.Date(), nullable=False),
-    sa.Column('name_on_card', sa.String(length=200), nullable=False),
-    sa.Column('amount', sa.Float(), nullable=False),
-    sa.Column('booking_id', sa.Uuid(), nullable=False),
-    sa.Column('coupon_id', sa.Uuid(), nullable=True),
-    sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('datetime_modified', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.Column('datetime_created', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.ForeignKeyConstraint(['booking_id'], ['bookings.id'], ),
-    sa.ForeignKeyConstraint(['coupon_id'], ['coupons.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('debit_card_number')
-    )
     op.create_table('notifications',
     sa.Column('content', sa.String(length=200), nullable=False),
     sa.Column('customer_id', sa.Uuid(), nullable=False),
@@ -181,8 +173,7 @@ def upgrade() -> None:
     )
     op.create_table('seats',
     sa.Column('seat_name', sa.String(), nullable=False),
-    sa.Column('total_seats', sa.Integer(), nullable=False),
-    sa.Column('seat_type', sa.Integer(), nullable=False),
+    sa.Column('seat_type', sa.String(), nullable=False),
     sa.Column('is_reserved', sa.Boolean(), nullable=False),
     sa.Column('seat_price', sa.Float(), nullable=False),
     sa.Column('booking_id', sa.Uuid(), nullable=False),
@@ -202,14 +193,14 @@ def downgrade() -> None:
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('seats')
     op.drop_table('notifications')
-    op.drop_table('debit_cards')
-    op.drop_table('credit_cards')
     op.drop_table('bookings')
     op.drop_table('showtimes')
     op.drop_table('movies')
     op.drop_table('staff_members')
     op.drop_table('halls')
+    op.drop_table('debit_cards')
     op.drop_table('customers')
+    op.drop_table('credit_cards')
     op.drop_table('coupons')
     op.drop_table('admins')
     # ### end Alembic commands ###
