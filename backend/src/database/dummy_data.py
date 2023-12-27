@@ -55,72 +55,72 @@ DUMMY_DATA: List[Tuple[ModelType, Dict[str, Any]]] = [
             "customer_id": NIL_UUID
         }
     ),
-    (
-        Movie,
-        {
-            "title": "Aquaman 2",
-            "description": "The sequel to the 2018 film 'Aquaman', following the title character's post-Justice League adventures.",
-            "duration_mins": 143,
-            "language": "English",
-            "release_date": dt.date(2023, 12, 16),
-            "country": "USA",
-            "genre": "Adventure",
-            "admin_id": NIL_UUID
-        }
-    ),
-    (
-        ShowTime,
-        {
-            "show_date": dt.date(2023, 12, 26),
-            "start_time": dt.time(20, 0),
-            "end_time": dt.time(22, 23),
-            "admin_id": NIL_UUID,
-            "movie_id": NIL_UUID,
-            "hall_id": NIL_UUID
-        }
-    ),
-    (
-        Hall,
-        {
-            "name": "East Hall",
-            "total_seats": 80
-        }
-    ),
-    (
-        Seat,
-        {
-            "seat_name": "A1",
-            "seat_type": "Regular",
-            "is_reserved": True,
-            "seat_price": 30.0,
-            "booking_id": NIL_UUID,
-            "hall_id": NIL_UUID
-        }
-    ),
-    (
-        Booking,
-        {
-            "num_seats": 2,
-            "status": 1,  # confirmed
-            "order_total": 60.0,
-            "customer_id": NIL_UUID,
-            "staff_member_id": NIL_UUID,
-            "showtime_id": NIL_UUID
-        }
-    ),
-    (
-        CreditCard,
-        {
-            "amount": 30.0,
-            "credit_card_number": "1111222233334444",
-            "expiry_date": dt.date(2024, 6),
-            "name_on_card": "Lil"
-        }
-    ),
+    # (
+    #     Movie,
+    #     {
+    #         "title": "Aquaman 2",
+    #         "description": "The sequel to the 2018 film 'Aquaman', following the title character's post-Justice League adventures.",
+    #         "duration_mins": 143,
+    #         "language": "English",
+    #         "release_date": dt.date(2023, 12, 16),
+    #         "country": "USA",
+    #         "genre": "Adventure",
+    #         "admin_id": NIL_UUID
+    #     }
+    # ),
+    # (
+    #     ShowTime,
+    #     {
+    #         "show_date": dt.date(2023, 12, 26),
+    #         "start_time": dt.time(20, 0),
+    #         "end_time": dt.time(22, 23),
+    #         "admin_id": NIL_UUID,
+    #         "movie_id": NIL_UUID,
+    #         "hall_id": NIL_UUID
+    #     }
+    # ),
+    # (
+    #     Hall,
+    #     {
+    #         "name": "East Hall",
+    #         "total_seats": 80
+    #     }
+    # ),
+    # (
+    #     Seat,
+    #     {
+    #         "seat_name": "A1",
+    #         "seat_type": "Regular",
+    #         "is_reserved": True,
+    #         "seat_price": 30.0,
+    #         "booking_id": NIL_UUID,
+    #         "hall_id": NIL_UUID
+    #     }
+    # ),
+    # (
+    #     Booking,
+    #     {
+    #         "num_seats": 2,
+    #         "status": 1,  # confirmed
+    #         "order_total": 60.0,
+    #         "customer_id": NIL_UUID,
+    #         "staff_member_id": NIL_UUID,
+    #         "showtime_id": NIL_UUID
+    #     }
+    # ),
+    # (
+    #     CreditCard,
+    #     {
+    #         "amount": 30.0,
+    #         "credit_card_number": "1111222233334444",
+    #         "expiry_date": dt.date(2024, 6, 1),
+    #         "name_on_card": "Lil"
+    #     }
+    # ),
     (
         Coupon,
         {
-            "expiry_date": dt.date(2024, 6),
+            "expiry_date": dt.date(2024, 6, 1),
             "discount": 50.0,
             "credit_card_id": NIL_UUID,
             "debit_card_id": None
